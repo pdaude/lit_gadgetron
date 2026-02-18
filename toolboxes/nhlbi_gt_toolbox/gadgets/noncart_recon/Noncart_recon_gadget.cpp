@@ -226,6 +226,8 @@ class Noncart_recon_gadget
                     timer_CSM.stop();
                     csm_calculated_ = true;
                     if (save_avg) {
+                        auto& [headAcq2, dataAcq2, trajAcq2] = allAcq[0];
+                        acqhdr = headAcq2;
                         *channel_images *= *conj(csm.get());
                         auto combined = sum(channel_images.get(), channel_images->get_number_of_dimensions() - 1);
                         cuNDArray<float_complext> cuimages_all =
@@ -276,9 +278,14 @@ class Noncart_recon_gadget
                     auto combined = sum(channel_images.get(), channel_images->get_number_of_dimensions() - 1);
                     cuNDArray<float_complext> cuimages_all =
                         reconstruction->crop_to_recondims<float_complext>(*combined);
+                    auto& [headAcq1, dataAcq1, trajAcq1] = allAcq[0];
+                    acqhdr = headAcq1;
                     process_and_send_images(cuimages_all, acqhdr, out, series_counter, "AVG", recon_params);
                     series_counter++;
+                    series_counter++;
                     combined->clear();
+                    
+
                 }
                 channel_images->clear();
                 csm_ims.clear();
@@ -663,6 +670,13 @@ class Noncart_recon_gadget
                     imarray_sense.headers_(n, s, loc).image_index = offset + 1;
                     imarray_sense.meta_[offset].append(GADGETRON_IMAGECOMMENT, image_comment.c_str());
                     imarray_sense.meta_[offset].append(GADGETRON_SEQUENCEDESCRIPTION, image_comment.c_str());
+                    imarray_sense.meta_[offset].append("ImageRowDir", imarray_sense.headers_(n, s, loc).read_dir[0]);
+                    imarray_sense.meta_[offset].append("ImageRowDir", imarray_sense.headers_(n, s, loc).read_dir[1]);
+                    imarray_sense.meta_[offset].append("ImageRowDir", imarray_sense.headers_(n, s, loc).read_dir[2]);
+                    imarray_sense.meta_[offset].append("ImageColumnDir", imarray_sense.headers_(n, s, loc).phase_dir[0]);
+                    imarray_sense.meta_[offset].append("ImageColumnDir", imarray_sense.headers_(n, s, loc).phase_dir[1]);
+                    imarray_sense.meta_[offset].append("ImageColumnDir", imarray_sense.headers_(n, s, loc).phase_dir[2]);
+                    
                 }
             }
         }
