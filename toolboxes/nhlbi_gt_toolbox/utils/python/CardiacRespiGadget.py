@@ -228,7 +228,7 @@ def CardiacRespiGadget(connection):
         eprint('Execution time (GatingSignal):', elapsed_time, 'seconds')
 
         acceptedTimes,idx_acceptedTimes = binning(respiratory_waveform,nav_tstamp_copy.get(),params['R_binningPercent'],params['R_bidirectional'], params['R_stableBinning'], params['R_evenbins'], numRBins)
-    if bstar_flag and params['samples']==1:
+    if (bstar_flag and params['samples']==1) or (bstar_flag and params['samples']==2):
         resp_bins_index=[]
         for idx_a in idx_acceptedTimes:
             idx_a.sort()
@@ -240,6 +240,10 @@ def CardiacRespiGadget(connection):
     print (f"Cardiac Binning Nbins {numCBins} PHYSIO {params['C_PHYSIO']} Nbinorms {params['C_numBins_to_ms']}")
     if params['C_PHYSIO']:
         nav_tstamp=cp.array(ecg_tstamp)
+        print("nav_tstamp before",nav_tstamp.shape)
+        if bstar_flag:
+           nav_tstamp=nav_tstamp[::params['samples']]
+           print("nav_tstamp after",nav_tstamp.shape)
         if params["C_waveforms"]:
             waveform_np=np.concatenate(waveform_data,1)
             waveform_t_np = np.concatenate(waveform_timestamp,0)
@@ -261,6 +265,11 @@ def CardiacRespiGadget(connection):
             cardiac_waveform_smooth = np.interp(2.5*nav_tstamp.get(), waveform_t_np, ecgtrigger)[None,:]
         else:
             cardiac_waveform_smooth=np.array(ecg_data)[:,:,0]
+            print("cardiac_waveform_smooth before",cardiac_waveform_smooth.shape)
+            if bstar_flag:
+                cardiac_waveform_smooth=cardiac_waveform_smooth[::params['samples'],:] 
+        print("cardiac_waveform_smooth after",cardiac_waveform_smooth.shape)
+                
         
     if ((numCBins==1 and params['C_numBins_to_ms']==False) and params["C_stableBinning"]==False):
         print("No Cardiac binning")
