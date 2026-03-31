@@ -71,10 +71,11 @@ def CardiacRespiGadget(connection):
             "C_smoothing": True,
             "C_numBins_to_ms":False,
             "C_waveforms":False,
+            "RC_enforced_1_echo":False,
             }
     BPfilter_freqs=   [0.08,0.1,0.45,0.50]
     boolean_keys=['phantom','gaussian','bstar','useDC','C_PHYSIO','R_stableBinning','R_evenbins','R_bidirectional','R_angular_filteration','R_binningPercent',
-    'C_evenbins','C_arrythmia_detection','C_angular_filteration','C_HRinfo','C_even_timing','C_smoothing','C_numBins_to_ms','C_stableBinning','C_waveforms']
+    'C_evenbins','C_arrythmia_detection','C_angular_filteration','C_HRinfo','C_even_timing','C_smoothing','C_numBins_to_ms','C_stableBinning','C_waveforms','RC_enforced_1_echo']
     str_keys=[]
     int_keys=['R_numBins','C_numBins','R_binningPercent','C_binningPercent','samples']
     
@@ -103,6 +104,10 @@ def CardiacRespiGadget(connection):
 
     encoding_limits = mrd_header.encoding[0].encodingLimits
     number_of_sets=encoding_limits.set.maximum+1
+    # Enforcing the binning one echoe time
+    if params['RC_enforced_1_echo']:
+        number_of_sets=1
+        
     mz=mrd_header.encoding[0].encodedSpace.matrixSize.z
     ecg_data = []
     ecg_tstamp = []
@@ -366,5 +371,3 @@ def CardiacRespiGadget(connection):
     
 if __name__ == '__main__':
     gadgetron.external.listen(2000,CardiacRespiGadget)
-    
-    
