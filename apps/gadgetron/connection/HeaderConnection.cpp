@@ -128,13 +128,13 @@ namespace {
                                         GDEBUG_STREAM("Recon FOV: X " << header.encoding.front().reconSpace.fieldOfView_mm.x << " Y " << header.encoding.front().reconSpace.fieldOfView_mm.y << " Z " << header.encoding.front().reconSpace.fieldOfView_mm.z);
                                         GDEBUG_STREAM("Encoding Limits: Encoded step 1 max " << header.encoding.at(0).encodingLimits.kspace_encoding_step_1.get().maximum  << " Encoded step 2 max " << header.encoding.at(0).encodingLimits.kspace_encoding_step_2.get().maximum  );
 
-                                        header.encoding.front().encodedSpace.matrixSize.x=size_t(h_traj.encoding.front().reconSpace.matrixSize.x);
-                                        header.encoding.front().encodedSpace.matrixSize.y=size_t(h_traj.encoding.front().reconSpace.matrixSize.y);
-                                        header.encoding.front().encodedSpace.matrixSize.z=size_t(h_traj.encoding.front().reconSpace.matrixSize.z);
+                                        header.encoding.front().encodedSpace.matrixSize.x=size_t(h_traj.encoding.front().reconSpace.matrixSize.x * factor_0r);
+                                        header.encoding.front().encodedSpace.matrixSize.y=size_t(h_traj.encoding.front().reconSpace.matrixSize.y * factor_1r);
+                                        header.encoding.front().encodedSpace.matrixSize.z=size_t(h_traj.encoding.front().reconSpace.matrixSize.z * factor_2r);
 
-                                        header.encoding.front().reconSpace.matrixSize.x=size_t(h_traj.encoding.front().reconSpace.matrixSize.x);
-                                        header.encoding.front().reconSpace.matrixSize.y=size_t(h_traj.encoding.front().reconSpace.matrixSize.y);
-                                        header.encoding.front().reconSpace.matrixSize.z=size_t(h_traj.encoding.front().reconSpace.matrixSize.z);
+                                        header.encoding.front().reconSpace.matrixSize.x=size_t(h_traj.encoding.front().reconSpace.matrixSize.x * factor_0r);
+                                        header.encoding.front().reconSpace.matrixSize.y=size_t(h_traj.encoding.front().reconSpace.matrixSize.y * factor_1r);
+                                        header.encoding.front().reconSpace.matrixSize.z=size_t(h_traj.encoding.front().reconSpace.matrixSize.z * factor_2r);
 
                                         header.encoding.front().encodedSpace.fieldOfView_mm.x=h_traj.encoding.front().reconSpace.fieldOfView_mm.x;
                                         header.encoding.front().encodedSpace.fieldOfView_mm.y=h_traj.encoding.front().reconSpace.fieldOfView_mm.y;

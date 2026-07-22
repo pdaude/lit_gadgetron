@@ -537,17 +537,16 @@ class Noncart_recon_gadget
 
             case 6: {
                 cuIimages = reconstruction4D.reconstructMOCOLR(&cuData, &trajVec, &dcwVec, csm, referencePhase);
-                //Process and send the respiratory compensated images or MOCOLR instead
-                if(save_intermediate_images){
-                    process_and_send_images(cuIimages, acqhdr, out, series_counter,std::string("4D_MOCOLR") + img_parameters_name, recon_params);
-                    series_counter++;
-                    
-                }else{
-                    auto cuImages_compensated = reconstruction4D.register_and_apply_deformations(cuIimages,referencePhase);
-                    process_and_send_images(cuImages_compensated, acqhdr, out, series_counter,std::string("MOCOLR_comp") + img_parameters_name, recon_params);
-                    series_counter++;
-                }
-                                
+                // Process and send the respiratory compensated images
+                //auto cuImages_compensated = reconstruction4D.register_and_apply_deformations(cuIimages,referencePhase);
+                process_and_send_images(cuIimages, acqhdr, out, series_counter,
+                                        std::string("4D_MOCOLR") + img_parameters_name, recon_params);
+                //series_counter++;
+                //process_and_send_images(cuImages_compensated, acqhdr, out, series_counter,
+                //                        std::string("MOCOLR_comp") + img_parameters_name, recon_params);
+                
+                
+                
             } break;
 
             case 7: // 3D recon
