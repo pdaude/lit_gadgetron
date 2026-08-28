@@ -68,7 +68,7 @@ RUN chmod +x /tini
 
 USER root
 COPY --chown=$USER_UID:conda toolboxes/nhlbi_gt_toolbox/GIRF/ /opt/GIRF/
-COPY --chown=$USER_UID:conda toolboxes/nhlbi_gt_toolbox/models_dl/ /opt/models/
+#COPY --chown=$USER_UID:conda toolboxes/nhlbi_gt_toolbox/models_dl/ /opt/models/
 
 FROM gadgetron_baseimage AS gadgetron_dev_cuda
 ARG USER_UID
@@ -154,7 +154,7 @@ COPY --from=gadgetron_cudabuild --chown=$USER_UID:conda /opt/conda/envs/gadgetro
 # Copy build artifacts and entrypoint
 COPY --from=gadgetron_cudabuild --chown=$USER_UID:conda /opt/package /opt/conda/envs/gadgetron/
 COPY --from=gadgetron_cudabuild --chown=$USER_UID:conda /opt/code/gadgetron/docker/entrypoint.sh /opt/
-COPY --from=gadgetron_cudabuild --chown=$USER_UID:conda /opt/models/ /opt/models/
+#COPY --from=gadgetron_cudabuild --chown=$USER_UID:conda /opt/models/ /opt/models/
 
 ENV CONDA_ENV_PATH=/opt/conda/envs/gadgetron
 RUN echo "export NUMBA_CUDA_ENABLE_PYNVJITLINK=1" >> $CONDA_ENV_PATH/etc/conda/activate.d/env_vars.sh
